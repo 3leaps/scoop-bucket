@@ -5,7 +5,7 @@ APP ?= sfetch
 VERSION ?=
 SOURCE ?= --github
 
-.PHONY: update update-sfetch release
+.PHONY: update update-sfetch update-seclusor release
 
 update:
 	@if [[ -z "$(VERSION)" ]]; then \
@@ -22,6 +22,14 @@ update-sfetch:
 		exit 1; \
 	fi
 	@./scripts/update-manifest.sh "$(OWNER)" sfetch "$(VERSION)" "$(SOURCE)"
+
+update-seclusor:
+	@if [[ -z "$(VERSION)" ]]; then \
+		echo "ERROR: VERSION is required"; \
+		echo "Usage: make update-seclusor VERSION=0.1.3 [SOURCE=--github|--local]"; \
+		exit 1; \
+	fi
+	@./scripts/update-manifest.sh "$(OWNER)" seclusor "$(VERSION)" "$(SOURCE)"
 
 release:
 	@if [[ -z "$(VERSION)" ]]; then \

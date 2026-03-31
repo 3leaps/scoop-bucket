@@ -78,11 +78,6 @@ owner = sys.argv[4]
 app_name = sys.argv[5]
 version = sys.argv[6]
 
-asset_map = {
-    "64bit": f"{app_name}_windows_amd64.zip",
-    "arm64": f"{app_name}_windows_arm64.zip",
-}
-
 hashes = {}
 for line in sums_path.read_text().splitlines():
     parts = line.split()
@@ -93,22 +88,26 @@ manifest = json.loads(manifest_path.read_text())
 manifest["version"] = version
 
 architecture = manifest.get("architecture", {})
-for scoop_arch, asset_name in asset_map.items():
-    if scoop_arch not in architecture:
+autoupdate_arches = manifest.get("autoupdate", {}).get("architecture", {})
+updated = []
+
+for arch, arch_manifest in architecture.items():
+    template = autoupdate_arches.get(arch, {}).get("url")
+    if not template:
         continue
+    url = template.replace("$version", version)
+    asset_name = url.rsplit("/", 1)[-1]
     if asset_name not in hashes:
         raise SystemExit(f"ERROR: could not find {asset_name} hash in SHA256SUMS")
-    architecture[scoop_arch]["url"] = (
-        f"https://github.com/{owner}/{app_name}/releases/download/v{version}/{asset_name}"
-    )
-    architecture[scoop_arch]["hash"] = hashes[asset_name]
+    arch_manifest["url"] = url
+    arch_manifest["hash"] = hashes[asset_name]
+    updated.append((arch, asset_name, hashes[asset_name]))
 
 temp_manifest_path.write_text(json.dumps(manifest, indent=2) + "\n")
 print(f"Updated {manifest_path}")
 print(f"  version: {version}")
-for scoop_arch, asset_name in asset_map.items():
-    if scoop_arch in architecture:
-        print(f"  {scoop_arch}: {hashes[asset_name]}")
+for arch, asset_name, asset_hash in updated:
+    print(f"  {arch}: {asset_name} {asset_hash}")
 PY
 
 mv "$TEMP_MANIFEST" "$MANIFEST_PATH"
