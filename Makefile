@@ -5,7 +5,7 @@ APP ?= sfetch
 VERSION ?=
 SOURCE ?= --github
 
-.PHONY: update update-sfetch update-seclusor release
+.PHONY: update update-gonimbus update-sfetch update-seclusor release
 
 update:
 	@if [[ -z "$(VERSION)" ]]; then \
@@ -22,6 +22,14 @@ update-sfetch:
 		exit 1; \
 	fi
 	@./scripts/update-manifest.sh "$(OWNER)" sfetch "$(VERSION)" "$(SOURCE)"
+
+update-gonimbus:
+	@if [[ -z "$(VERSION)" ]]; then \
+		echo "ERROR: VERSION is required"; \
+		echo "Usage: make update-gonimbus VERSION=0.3.2 [SOURCE=--github|--local]"; \
+		exit 1; \
+	fi
+	@./scripts/update-manifest.sh "$(OWNER)" gonimbus "$(VERSION)" "$(SOURCE)"
 
 update-seclusor:
 	@if [[ -z "$(VERSION)" ]]; then \
