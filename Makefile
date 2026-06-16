@@ -5,7 +5,13 @@ APP ?= sfetch
 VERSION ?=
 SOURCE ?= --github
 
-.PHONY: update update-gonimbus update-sfetch update-seclusor release
+.PHONY: check update update-gonimbus update-mdmeld update-sfetch update-seclusor release
+
+check:
+	@./scripts/validate-manifests.sh
+	@shellcheck scripts/*.sh
+	@shfmt -d scripts/*.sh
+	@echo "All checks passed"
 
 update:
 	@if [[ -z "$(VERSION)" ]]; then \
@@ -30,6 +36,14 @@ update-gonimbus:
 		exit 1; \
 	fi
 	@./scripts/update-manifest.sh "$(OWNER)" gonimbus "$(VERSION)" "$(SOURCE)"
+
+update-mdmeld:
+	@if [[ -z "$(VERSION)" ]]; then \
+		echo "ERROR: VERSION is required"; \
+		echo "Usage: make update-mdmeld VERSION=0.2.0 [SOURCE=--github|--local]"; \
+		exit 1; \
+	fi
+	@./scripts/update-manifest.sh "$(OWNER)" mdmeld "$(VERSION)" "$(SOURCE)"
 
 update-seclusor:
 	@if [[ -z "$(VERSION)" ]]; then \
