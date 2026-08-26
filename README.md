@@ -8,6 +8,7 @@ Scoop bucket for 3leaps CLI tools.
 
 ```powershell
 scoop bucket add 3leaps https://github.com/3leaps/scoop-bucket
+scoop install decernor
 scoop install sfetch
 scoop install gonimbus
 scoop install mdmeld
@@ -18,6 +19,7 @@ scoop install seclusor
 
 | Tool | Description |
 | --- | --- |
+| [decernor](https://github.com/3leaps/decernor) | Local key-material hygiene and readiness checks |
 | [sfetch](https://github.com/3leaps/sfetch) | Secure, verifiable, zero-trust downloader for the uncertain world |
 | [gonimbus](https://github.com/3leaps/gonimbus) | Cloud object storage crawl, inspect, and streaming CLI |
 | [mdmeld](https://github.com/3leaps/mdmeld) | Pack directory trees into markdown archives for AI sharing |
@@ -26,6 +28,7 @@ scoop install seclusor
 ## Update
 
 ```powershell
+scoop update decernor
 scoop update sfetch
 scoop update gonimbus
 scoop update mdmeld
