@@ -5,7 +5,7 @@ APP ?= sfetch
 VERSION ?=
 SOURCE ?= --github
 
-.PHONY: check update update-gonimbus update-mdmeld update-sfetch update-seclusor release
+.PHONY: check update update-decernor update-gonimbus update-mdmeld update-sfetch update-seclusor release
 
 check:
 	@./scripts/validate-manifests.sh
@@ -28,6 +28,14 @@ update-sfetch:
 		exit 1; \
 	fi
 	@./scripts/update-manifest.sh "$(OWNER)" sfetch "$(VERSION)" "$(SOURCE)"
+
+update-decernor:
+	@if [[ -z "$(VERSION)" ]]; then \
+		echo "ERROR: VERSION is required"; \
+		echo "Usage: make update-decernor VERSION=0.1.6 [SOURCE=--github|--local]"; \
+		exit 1; \
+	fi
+	@./scripts/update-manifest.sh "$(OWNER)" decernor "$(VERSION)" "$(SOURCE)"
 
 update-gonimbus:
 	@if [[ -z "$(VERSION)" ]]; then \
