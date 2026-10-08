@@ -13,6 +13,7 @@ scoop install sfetch
 scoop install gonimbus
 scoop install mdmeld
 scoop install seclusor
+scoop install spanwit
 ```
 
 ## Available tools
@@ -24,6 +25,7 @@ scoop install seclusor
 | [gonimbus](https://github.com/3leaps/gonimbus) | Cloud object storage crawl, inspect, and streaming CLI |
 | [mdmeld](https://github.com/3leaps/mdmeld) | Pack directory trees into markdown archives for AI sharing |
 | [seclusor](https://github.com/3leaps/seclusor) | Git-trackable secrets management with age encryption |
+| [spanwit](https://github.com/3leaps/spanwit) | Context-aware disk-space diagnostics and safe reclamation |
 
 ## Update
 
@@ -33,6 +35,7 @@ scoop update sfetch
 scoop update gonimbus
 scoop update mdmeld
 scoop update seclusor
+scoop update spanwit
 ```
 
 ## Maintainers
@@ -41,6 +44,7 @@ Manifests live in `bucket/`. Update one from a published GitHub release and vali
 
 ```bash
 make update-seclusor VERSION=0.1.6   # or: make update APP=<tool> VERSION=<x.y.z>
+make update-spanwit VERSION=0.2.0
 make check                           # validate manifests + shellcheck/shfmt scripts
 ```
 
