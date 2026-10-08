@@ -5,7 +5,7 @@ APP ?= sfetch
 VERSION ?=
 SOURCE ?= --github
 
-.PHONY: check update update-decernor update-gonimbus update-mdmeld update-sfetch update-seclusor release
+.PHONY: check update update-decernor update-gonimbus update-mdmeld update-sfetch update-seclusor update-spanwit release
 
 check:
 	@./scripts/validate-manifests.sh
@@ -60,6 +60,14 @@ update-seclusor:
 		exit 1; \
 	fi
 	@./scripts/update-manifest.sh "$(OWNER)" seclusor "$(VERSION)" "$(SOURCE)"
+
+update-spanwit:
+	@if [[ -z "$(VERSION)" ]]; then \
+		echo "ERROR: VERSION is required"; \
+		echo "Usage: make update-spanwit VERSION=0.2.0 [SOURCE=--github|--local]"; \
+		exit 1; \
+	fi
+	@./scripts/update-manifest.sh "$(OWNER)" spanwit "$(VERSION)" "$(SOURCE)"
 
 release:
 	@if [[ -z "$(VERSION)" ]]; then \
