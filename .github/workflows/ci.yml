@@ -13,10 +13,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
-      - name: Install shellcheck and shfmt
+      - name: Install shellcheck, shfmt and minisign
         run: |
           sudo apt-get update -q
-          sudo apt-get install -y -q shellcheck shfmt
+          sudo apt-get install -y -q shellcheck shfmt minisign
 
       - name: Validate manifests and scripts
         run: make check

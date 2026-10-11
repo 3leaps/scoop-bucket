@@ -44,11 +44,13 @@ Manifests live in `bucket/`. Update one from a published GitHub release and vali
 
 ```bash
 make update-seclusor VERSION=0.1.6   # or: make update APP=<tool> VERSION=<x.y.z>
-make update-spanwit VERSION=0.2.0
-make check                           # validate manifests + shellcheck/shfmt scripts
+make update-spanwit VERSION=0.2.1
+make check                           # validate manifests, lint scripts, run updater tests
 ```
 
-`make check` runs in CI (`.github/workflows/ci.yml`) on every push and pull request; `scripts/validate-manifests.sh` asserts each manifest is well-formed JSON with required fields, sha256-shaped hashes, and version-matching download URLs.
+The updater takes hashes only from the release `SHA256SUMS` after verifying `SHA256SUMS.minisig` with `minisign` against the key pinned for the app in `keys/minisign-pubkeys.txt`, and refuses a name listed twice. When the trusted comment starts with `<app> v`, it must name the requested version; a comment in another form (such as minisign's default timestamp) is not checked for the version. GitHub's asset digest is a cross-check: a disagreement stops the update, and an asset with no GitHub digest (or a `--local` run) is not cross-checked. `minisign` must be installed. A key change is a reviewed edit to `keys/minisign-pubkeys.txt`, never something read from a release.
+
+`make check` runs in CI (`.github/workflows/ci.yml`) on every push and pull request; `scripts/validate-manifests.sh` asserts each manifest is well-formed JSON with required fields, sha256-shaped hashes, and version-matching download URLs, and `tests/update-manifest_test.sh` covers the signature checks with throwaway keys.
 
 ## License
 

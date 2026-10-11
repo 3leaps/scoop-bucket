@@ -9,8 +9,9 @@ SOURCE ?= --github
 
 check:
 	@./scripts/validate-manifests.sh
-	@shellcheck scripts/*.sh
-	@shfmt -d scripts/*.sh
+	@shellcheck scripts/*.sh tests/*.sh
+	@shfmt -d scripts/*.sh tests/*.sh
+	@./tests/update-manifest_test.sh
 	@echo "All checks passed"
 
 update:
