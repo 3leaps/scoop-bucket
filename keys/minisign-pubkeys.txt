@@ -1,0 +1,14 @@
+# Pinned minisign public keys for upstream release manifests (public keys only).
+# Format: <app> <base64 public key>. The updater verifies SHA256SUMS against
+# the key pinned here before it uses any hash; an app with no entry is refused.
+# Rotate by changing the entry in a reviewed PR, never from release assets.
+# Current org key: RWTqUZ/... . kitfly, mdmeld and seclusor still sign with the
+# previous key; move each entry to the current key with that app's first release
+# signed by it (the updater refuses that release until the pin changes).
+decernor RWTqUZ/PtmfAbQ3RKIlp/YTKT6zFeNMAZ8iAMelhlmqEsVqjKj3ctSA1
+gonimbus RWTqUZ/PtmfAbQ3RKIlp/YTKT6zFeNMAZ8iAMelhlmqEsVqjKj3ctSA1
+kitfly RWTAoUJ007VE3h8tbHlBCyk2+y0nn7kyA4QP34LTzdtk8M6A2sryQtZC
+mdmeld RWTAoUJ007VE3h8tbHlBCyk2+y0nn7kyA4QP34LTzdtk8M6A2sryQtZC
+seclusor RWTAoUJ007VE3h8tbHlBCyk2+y0nn7kyA4QP34LTzdtk8M6A2sryQtZC
+sfetch RWTqUZ/PtmfAbQ3RKIlp/YTKT6zFeNMAZ8iAMelhlmqEsVqjKj3ctSA1
+spanwit RWTqUZ/PtmfAbQ3RKIlp/YTKT6zFeNMAZ8iAMelhlmqEsVqjKj3ctSA1
