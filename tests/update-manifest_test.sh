@@ -117,4 +117,44 @@ run >/dev/null
 [[ "$(jq -r '.architecture.arm64.hash' "$TMP/repo/bucket/spanwit.json")" == "$arm" ]]
 [[ "$(jq -r '.architecture.arm64.url' "$TMP/repo/bucket/spanwit.json")" == *"/v9.9.9/spanwit_9.9.9_windows_arm64.zip" ]]
 
+# Raw-binary manifest validation controls (validate-manifests.sh)
+cp "$ROOT/scripts/validate-manifests.sh" "$TMP/repo/scripts/"
+cp "$ROOT/bucket/gonimbus.json" "$TMP/repo/bucket/"
+"$TMP/repo/scripts/validate-manifests.sh" >/dev/null
+
+expect_validate_fail() {
+	local label="$1" reason="$2" err
+	if err="$("$TMP/repo/scripts/validate-manifests.sh" 2>&1)"; then
+		echo "FAIL expected validate-manifests refusal: $label" >&2
+		exit 1
+	fi
+	if [[ "$err" != *"$reason"* ]]; then
+		echo "FAIL $label refused for wrong reason: $err" >&2
+		exit 1
+	fi
+}
+
+# Replacing gonimbus raw .exe URL with .zip fails closed
+jq '.architecture["64bit"].url |= sub("\\.exe$"; ".zip")' "$ROOT/bucket/gonimbus.json" >"$TMP/repo/bucket/gonimbus.json"
+expect_validate_fail "gonimbus archive URL" "raw-binary url must reference"
+
+# Adding 3rd shim argument in bin fails closed
+jq '.architecture["64bit"].bin[0] += ["--shim"]' "$ROOT/bucket/gonimbus.json" >"$TMP/repo/bucket/gonimbus.json"
+expect_validate_fail "gonimbus 3-element bin" "raw-binary bin must be"
+
+# Adding extract_dir or any install/uninstall/env/psmodule/shortcuts key at root or under architecture fails closed
+jq '.extract_dir = "gonimbus"' "$ROOT/bucket/gonimbus.json" >"$TMP/repo/bucket/gonimbus.json"
+expect_validate_fail "gonimbus extract_dir" "raw-binary manifest must not set extract_dir"
+jq '.architecture["64bit"].extract_dir = "gonimbus"' "$ROOT/bucket/gonimbus.json" >"$TMP/repo/bucket/gonimbus.json"
+expect_validate_fail "gonimbus arch extract_dir" "architecture 64bit: raw-binary manifest must not set extract_dir"
+
+for forbidden_key in pre_install post_install installer uninstaller pre_uninstall post_uninstall psmodule env_add_path env_set shortcuts; do
+	jq --arg k "$forbidden_key" '.[$k] = ["bad"]' "$ROOT/bucket/gonimbus.json" >"$TMP/repo/bucket/gonimbus.json"
+	expect_validate_fail "gonimbus root $forbidden_key" "raw-binary manifest must not set $forbidden_key"
+	jq --arg k "$forbidden_key" '.architecture["64bit"][$k] = ["bad"]' "$ROOT/bucket/gonimbus.json" >"$TMP/repo/bucket/gonimbus.json"
+	expect_validate_fail "gonimbus arch $forbidden_key" "architecture 64bit: raw-binary manifest must not set $forbidden_key"
+done
+cp "$ROOT/bucket/gonimbus.json" "$TMP/repo/bucket/"
+"$TMP/repo/scripts/validate-manifests.sh" >/dev/null
+
 echo "update-manifest signed-checksum tests passed"
