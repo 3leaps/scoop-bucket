@@ -14,6 +14,7 @@ scoop install gonimbus
 scoop install mdmeld
 scoop install seclusor
 scoop install spanwit
+scoop install yamlprims
 ```
 
 ## Available tools
@@ -26,6 +27,7 @@ scoop install spanwit
 | [mdmeld](https://github.com/3leaps/mdmeld) | Pack directory trees into markdown archives for AI sharing |
 | [seclusor](https://github.com/3leaps/seclusor) | Git-trackable secrets management with age encryption |
 | [spanwit](https://github.com/3leaps/spanwit) | Context-aware disk-space diagnostics and safe reclamation |
+| [yamlprims](https://github.com/3leaps/yamlprims) | Memory-safe YAML 1.2 Core reader, writer and I-JSON projection |
 
 ## Update
 
@@ -36,6 +38,7 @@ scoop update gonimbus
 scoop update mdmeld
 scoop update seclusor
 scoop update spanwit
+scoop update yamlprims
 ```
 
 ## Maintainers

@@ -5,7 +5,7 @@ APP ?= sfetch
 VERSION ?=
 SOURCE ?= --github
 
-.PHONY: check update update-decernor update-gonimbus update-mdmeld update-sfetch update-seclusor update-spanwit release
+.PHONY: check update update-decernor update-gonimbus update-mdmeld update-sfetch update-seclusor update-spanwit update-yamlprims release
 
 check:
 	@./scripts/validate-manifests.sh
@@ -69,6 +69,14 @@ update-spanwit:
 		exit 1; \
 	fi
 	@./scripts/update-manifest.sh "$(OWNER)" spanwit "$(VERSION)" "$(SOURCE)"
+
+update-yamlprims:
+	@if [[ -z "$(VERSION)" ]]; then \
+		echo "ERROR: VERSION is required"; \
+		echo "Usage: make update-yamlprims VERSION=0.2.1 [SOURCE=--github|--local]"; \
+		exit 1; \
+	fi
+	@./scripts/update-manifest.sh "$(OWNER)" yamlprims "$(VERSION)" "$(SOURCE)"
 
 release:
 	@if [[ -z "$(VERSION)" ]]; then \
